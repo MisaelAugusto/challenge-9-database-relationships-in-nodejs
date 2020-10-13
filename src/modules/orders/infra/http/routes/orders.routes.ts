@@ -5,7 +5,7 @@ import OrdersController from '../controller/OrdersController';
 const ordersRouter = Router();
 const ordersController = new OrdersController();
 
-ordersRouter.post('/', ordersController.create);
 ordersRouter.get('/:id', ordersController.show);
+ordersRouter.post('/', ordersController.create);
 
 export default ordersRouter;
