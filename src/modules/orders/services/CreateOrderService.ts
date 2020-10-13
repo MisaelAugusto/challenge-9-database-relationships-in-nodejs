@@ -45,7 +45,11 @@ class CreateOrderService {
 
     const findProducts = await this.productsRepository.findAllById(products);
 
-    if (findProducts.length < products.length) {
+    const findInvalidProduct = products.some(product =>
+      findProducts.every(findProduct => findProduct.id !== product.id),
+    );
+
+    if (findInvalidProduct) {
       throw new AppError('Product does not exists');
     }
 
@@ -56,7 +60,7 @@ class CreateOrderService {
         product => product.id === findProduct.id,
       )[0];
 
-      if (quantity > findProduct.quantity) {
+      if (findProduct.quantity < quantity) {
         throw new AppError('There is not enough product in stock.');
       }
 
