@@ -80,6 +80,16 @@ class CreateOrderService {
       products: orderProducts,
     });
 
+    const updateProductsQuantities = orderProducts.map(orderProduct => ({
+      id: orderProduct.product_id,
+      quantity:
+        findProducts.filter(
+          findProduct => findProduct.id === orderProduct.product_id,
+        )[0].quantity - orderProduct.quantity,
+    }));
+
+    await this.productsRepository.updateQuantity(updateProductsQuantities);
+
     return order;
   }
 }
